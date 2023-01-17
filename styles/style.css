@@ -1,9 +1,11 @@
+body{
+  font-family: arial;
+}
 .container {
   padding-left: 10px;
   padding-right: 10px;
   display: flex;
   flex-direction: column;
-  font-family: arial;
 }
 
 .logo {
@@ -202,18 +204,47 @@
 
 .admin-header-txt {
   font-size: 18px;
-  font-weight: bold;
+  color: #0386FC;
 }
 
 .admin-header-btn {
   font-size: 16px;
   background-color: white;
+  color: #0386FC;
   border: none;
 }
 
 .container-comment-btn {
   display: flex;
   justify-content: flex-end;
+}
+
+.comment-btn-edit{
+  margin-right: 5px;
+  background-color: #0384fc;
+  width: 80px;
+  height: 25px;
+  border: 1px solid;
+  border-radius: 15px;
+  color: white;
+  text-align: center;
+  display: inline-block;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.comment-btn-delete{
+  margin-right: 5px;
+  background-color: #fc0303;
+  width: 80px;
+  height: 25px;
+  border: 1px solid;
+  border-radius: 15px;
+  color: white;
+  text-align: center;
+  display: inline-block;
+  font-size: 14px;
+  font-weight: bold;
 }
 
 /* Edit page */
