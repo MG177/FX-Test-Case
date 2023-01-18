@@ -70,8 +70,31 @@
             voluptas, quod, quia, voluptates quae voluptatibus quibusdam
             voluptatum quos quidem quas nesciunt. Quisquam, quae.
           </p>
+          <h2 id="comment-length"></h2>
         </div>
       </div>
     </div>
+    <script>
+      $.ajax({
+        url: "/api/comment",
+        type: "GET",
+        success: function (data) {
+          const comments = data;
+          const commentLength = document.getElementById("comment-length");
+          commentLength.innerHTML = `Comments (${comments.length})`;
+          const commentContainer = document.getElementById("comments");
+          comments.forEach((comment) => {
+            const commentDiv = document.createElement("div");
+            commentDiv.classList.add("comment");
+            commentDiv.innerHTML = `
+            <h3>${comment.name}</h3>
+            <p class="date">${convertTimestamp(comment.date)}</p>
+            <p>${comment.text}</p>
+            `;
+            commentContainer.appendChild(commentDiv);
+          });
+        },
+      });
+    </script>
   </body>
 </html>
