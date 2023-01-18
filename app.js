@@ -15,8 +15,8 @@ con.on('open', () => {
 app.use(express.json())
 
 
-const commentRouter = require('./routes/comments')
-app.use('/comments',commentRouter)
+const commentRouter = require('./routes/index')
+app.use('/',commentRouter)
 
 app.listen(9000, () => {
     console.log('server started')
