@@ -4,14 +4,19 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="./styles/style.css" />
+    <link rel="stylesheet" href="/style.css" />
     <title>My Article</title>
+    <script
+      src="https://code.jquery.com/jquery-3.6.3.js"
+      integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM="
+      crossorigin="anonymous"
+    ></script>
   </head>
   <body>
     <div class="container">
       <!-- Logo -->
       <div class="logo">
-        <img src="./img/Logo.ico" alt="Logo" class="logo-img" />
+        <img src="/logo" alt="Logo" class="logo-img" />
         <p class="logo-txt">LOGO</p>
       </div>
 
@@ -20,7 +25,7 @@
         <h2 class="article-title">Article Title</h2>
         <h4 class="article-time">1st Jan 2023</h4>
         <p class="article-content">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc interdum ipsum sed nunc tristique, vel pretium leo scelerisque. Pellentesque rutrum velit ac dolor ullamcorper, quis interdum nibh porta. Quisque semper mollis purus sed molestie. Aenean elementum erat quis cursus ultrices. Proin fermentum ligula ligula, et imperdiet quam rhoncus in. Morbi sed dui a arcu tristique ultricies. Etiam eget enim eget nisl mollis fringilla sit amet at ante. Sed bibendum neque nec dolor pellentesque finibus. Proin quam ligula, ornare quis ex sed, interdum mattis dui. Pellentesque fringilla nisl sit amet nunc lacinia cursus. Sed tincidunt erat mi, non posuere nibh rutrum in. Maecenas bibendum dictum consequat.
+          Lorem ipsum sisst ametsdsd, consectetur aasddipiscing elit. Nunc interdum ipsum sed nunc tristique, vel pretium leo scelerisque. Pellentesque rutrum velit ac dolor ullamcorper, quis interdum nibh porta. Quisque semper mollis purus sed molestie. Aenean elementum erat quis cursus ultrices. Proin fermentum ligula ligula, et imperdiet quam rhoncus in. Morbi sed dui a arcu tristique ultricies. Etiam eget enim eget nisl mollis fringilla sit amasdet at ante. Sed bibendum neque nec dolor pellentesque finibus. Proin quam ligula, ornare quis ex sed, interdum mattis dui. Pellentesque fringilla nisl sit amet nunc lacinia cursus. Sed tincidunt serat mi, non posuere nibh rutrum in. Maecenas bibendum dictum consequat.
         </p>
       </div>
 
@@ -28,55 +33,81 @@
       <div class="form-container">
         <h2 class="form-title">Add Your Comment</h2>
         <form action="" class="form-content">
-          <input type="text" placeholder="Name" class="form-input" />
+          <input type="text" placeholder="Name" class="form-input" id="name"/>
           <textarea
             name=""
-            id=""
-            cols="30"
+            id="comment"
+            cols="50"
             rows="10"
             placeholder="Comment"
             class="form-txtarea"
           ></textarea>
           <div class="form-containerCaptcha">
-            <input type="text" placeholder="Captcha" class="form-input" />
-            <p class="captcha-txt">What is x + y?</p>
+            <input type="text" placeholder="Captcha" class="form-input" id="chaptcha"/>
+            <p class="captcha-txt" for="chaptcha"
+            id="chaptcha-value">What is x + y?</p>
           </div>
-          <button class="form-btn" type="submit">Submit</button>
+          <div id="form-warning" style="color: red; display: none"></div>
+          <button class="form-btn" onclick="Submit()" type="button" >Submit</button>
         </form>
       </div>
 
       <!-- Comments -->
-      <div class="comments-container">
-        <h2 class="comments-title">Comments (2)</h2>
-
-        <div class="comments-content">
-          <div class="comment-header">
-            <h2 class="comment-name">Faisal</h2>
-            <h4 class="comment-time">8th Jan 2023</h4>
-          </div>
-          <p class="comment-txt">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam
-            voluptas, quod, quia, voluptates quae voluptatibus quibusdam
-            voluptatum quos quidem quas nesciunt. Quisquam, quae.
-          </p>
-        </div>
-        <div class="comments-content">
-          <div class="comment-header">
-            <h2 class="comment-name">Azwar</h2>
-            <h4 class="comment-time">8th Jan 2023</h4>
-          </div>
-          <p class="comment-txt">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam
-            voluptas, quod, quia, voluptates quae voluptatibus quibusdam
-            voluptatum quos quidem quas nesciunt. Quisquam, quae.
-          </p>
-          <h2 id="comment-length"></h2>
-        </div>
+      <div class="container comments-content" id="comments">
+        <h2 id="comment-length"></h2>
       </div>
     </div>
     <script>
+
+      async function Submit() {
+        const name = document.getElementById("name");
+        const comment = document.getElementById("comment");
+        if(name.value != "" || comment.value != ""){
+          const data = {
+            name: name.value,
+            text: comment.value,
+          }
+          if (chaptcha()) {
+            await $.ajax({
+              url: "/comment",
+              type: "POST",
+              contentType: "application/json",
+              data: JSON.stringify(data),
+              success: location.reload(),
+              error: function (err) {
+                console.log(err);
+              },
+            });
+          } else {
+            const chaptchaWarning = document.getElementById("form-warning");
+              chaptchaWarning.innerHTML = "Wrong Chaptcha";
+              chaptchaWarning.style.display = "block";
+          }
+        }else{
+          const chaptchaWarning = document.getElementById("form-warning");
+          chaptchaWarning.innerHTML = "Name or comment cannot be empty";
+          chaptchaWarning.style.display = "block";
+        }
+      }
+      const x = Math.floor(Math.random() * 10);
+      const y = Math.floor(Math.random() * 10);
+      document.getElementById(
+        "chaptcha-value"
+      ).innerHTML = `What is ${x} + ${y}?`;
+
+      function chaptcha() {
+        const chaptcha = document.getElementById("chaptcha");
+        if (chaptcha.value == x + y) {
+          console.log("chaptcha true")
+          return true;
+        } else {
+          console.log("chaptcha false")
+          return false;
+        }
+      }
+
       $.ajax({
-        url: "/api/comment",
+        url: "/comment",
         type: "GET",
         success: function (data) {
           const comments = data;
@@ -87,14 +118,41 @@
             const commentDiv = document.createElement("div");
             commentDiv.classList.add("comment");
             commentDiv.innerHTML = `
-            <h3>${comment.name}</h3>
-            <p class="date">${convertTimestamp(comment.date)}</p>
-            <p>${comment.text}</p>
+            <div class="comments-content">
+            <div class="comment-header">
+              <h2 class="comment-name">${comment.name}</h2>
+              <h4 class="comment-time">${convertTimestamp(comment.date)}</h4>
+            </div>
+            <p class="comment-txt">
+              ${comment.text}
+              </p>
+            </div>
             `;
             commentContainer.appendChild(commentDiv);
           });
         },
       });
+      function convertTimestamp(timestamp) {
+        const date = new Date(timestamp);
+        const day = date.getDate();
+        const month = date.getMonth();
+        const year = date.getFullYear();
+        const months = [
+          "January",
+          "February",
+          "March",
+          "April",
+          "May",
+          "June",
+          "July",
+          "August",
+          "September",
+          "October",
+          "November",
+          "December",
+        ];
+        return `${day} ${months[month]} ${year}`;
+      }
     </script>
   </body>
 </html>

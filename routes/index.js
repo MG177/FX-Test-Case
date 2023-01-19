@@ -1,6 +1,5 @@
 const express = require('express')
 const path = require("path");
-const { addListener } = require('../models/comments')
 const router = express.Router()
 const comment = require('../controller/comment')
 
@@ -64,5 +63,27 @@ router.delete("/comment/:id", comment.delete);
 //         res.send('Error '+ err)
 //     }
 // })
+
+router.get("/", (req, res) => {
+    res.sendFile(path.join(__dirname, "../pages/home.html"));
+  });
+router.get("/login", (req, res) => {
+    res.sendFile(path.join(__dirname, "../pages/login.html"));
+  });
+router.get("/admin", (req, res) => {
+    res.redirect("/admin/comments");
+  });
+
+
+
+
+
+
+  router.get("/style.css", (req, res) => {
+    res.sendFile(path.join(__dirname, "../pages/styles/style.css"));
+  });
+  router.get("/logo", (req, res) => {
+    res.sendFile(path.join(__dirname, "../pages/assets/Logo.ico"));
+  });
 
 module.exports = router

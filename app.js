@@ -1,7 +1,7 @@
 const express = require('express')
 const { MongoServerClosedError } = require('mongodb')
 const mongoose = require('mongoose')
-const url = 'mongodb+srv://mg:mgmgmygmyg@fxtestcase.3sa58qk.mongodb.net/test'
+const url = 'mongodb+srv://mg:mgmgmygmyg@fxtestcase.3sa58qk.mongodb.net/?retryWrites=true&w=majority'
 
 const app = express()
 
@@ -15,8 +15,8 @@ con.on('open', () => {
 app.use(express.json())
 
 
-const commentRouter = require('./routes/index')
-app.use('/',commentRouter)
+const routes = require('./routes/index')
+app.use(routes)
 
 app.listen(9000, () => {
     console.log('server started')
