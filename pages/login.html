@@ -6,6 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/style.css" />
     <title>Admin Portal</title>
+    <script
+    src="https://code.jquery.com/jquery-3.6.3.js"
+    integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM="
+    crossorigin="anonymous"
+  ></script>
   </head>
   <body>
     <div>
@@ -13,7 +18,7 @@
         <!-- make login page in middle -->
         <div class="login-form-container">
           <div class="logo-container">
-            <img src="./img/Logo.ico" alt="Logo" class="logo-img" />
+            <img src="/logo" alt="Logo" class="logo-img" />
             <h3 class="logo-txt">LOGO</h3>
           </div>
 
@@ -23,17 +28,41 @@
               placeholder="Email"
               class="login-form-input"
               name="username"
+              id="email"
             />
             <input
               type="password"
               placeholder="Password"
               class="login-form-input"
               name="password"
+              id="password"
             />
-            <button class="form-btn" name="login">Login</button>
+            <button class="form-btn" name="login" onclick="Login()" type="button">Login</button>
           </form>
         </div>
       </div>
     </div>
+    <script>
+      function Login() {
+        const data = {
+          email: document.getElementById("email").value,
+          password: document.getElementById("password").value,
+        };
+        $.ajax({
+          url: "/user/login",
+          type: "POST",
+          contentType: "application/json",
+          data: JSON.stringify(data),
+          success: function() {
+            setInterval(() => {
+              window.location.href = "/admin";
+            }, 1000);
+          },
+          error: function(err) {
+            document.getElementById("error-message").innerHTML = err.responseJSON.err;
+          },
+        });
+      }
+    </script>
   </body>
 </html>

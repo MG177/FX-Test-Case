@@ -4,7 +4,12 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="./style.css" />
+    <link rel="stylesheet" href="/style.css" />
+    <script
+      src="https://code.jquery.com/jquery-3.6.3.js"
+      integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM="
+      crossorigin="anonymous"
+    ></script>
     <title>List of Comments</title>
   </head>
   <body>
@@ -13,40 +18,76 @@
         <p class="admin-header-txt">List of Comments</p>
         <button class="admin-header-btn">Logout</button>
       </div>
-      <div class="comments-container">
-        <h2 class="comments-title">List of Comments</h2>
-
-        <div class="comments-content">
-          <div class="comment-header">
-            <h2 class="comment-name">Faisal</h2>
-            <h4 class="comment-time">8th Jan 2023</h4>
-          </div>
-          <p class="comment-txt">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam
-            voluptas, quod, quia, voluptates quae voluptatibus quibusdam
-            voluptatum quos quidem quas nesciunt. Quisquam, quae.
-          </p>
-          <div class="container-comment-btn">
-            <button class="comment-btn-edit">Edit</button>
-            <button class="comment-btn-delete">Delete</button>
-          </div>
-        </div>
-        <div class="comments-content">
-          <div class="comment-header">
-            <h2 class="comment-name">Azwar</h2>
-            <h4 class="comment-time">8th Jan 2023</h4>
-          </div>
-          <p class="comment-txt">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam
-            voluptas, quod, quia, voluptates quae voluptatibus quibusdam
-            voluptatum quos quidem quas nesciunt. Quisquam, quae.
-          </p>
-          <div class="container-comment-btn">
-            <button class="comment-btn-edit">Edit</button>
-            <button class="comment-btn-delete">Delete</button>
-          </div>
-        </div>
+      <div class="container comments-container" id="comments">
+        <h2 class="comments-title" id="comment-length">List of Comments</h2>
       </div>
     </div>
+    <script>
+      $.ajax({
+        url: "/comment",
+        type: "GET",
+        success: function (data) {
+          const comments = data;
+          const commentLength = document.getElementById("comment-length");
+          commentLength.innerHTML = `List of Comments (${comments.length})`;
+          const commentContainer = document.getElementById("comments");
+          comments.forEach((comment) => {
+            const commentDiv = document.createElement("div");
+            commentDiv.classList.add("comment");
+            commentDiv.innerHTML = `
+
+            <div class="comments-content">
+              <div class="comment-header">
+                <h2 class="comment-name">${comment.name}</h2>
+                <h4 class="comment-time">${convertTimestamp(comment.date)}</h4>
+              </div>
+              <p class="comment-txt">
+                ${comment.text}
+              </p>
+              <div class="container-comment-btn">
+                <button class="comment-btn-edit" onclick="Edit('${comment._id}'") type="button">Edit</button>
+                <button class="comment-btn-delete" onclick="Delete('${comment._id}'" type="button")>Delete</button>
+              </div>
+            </div>
+            `;
+            commentContainer.appendChild(commentDiv);
+          });
+        },
+      });
+      function convertTimestamp(timestamp) {
+        const date = new Date(timestamp);
+        const day = date.getDate();
+        const month = date.getMonth();
+        const year = date.getFullYear();
+        const months = [
+          "January",
+          "February",
+          "March",
+          "April",
+          "May",
+          "June",
+          "July",
+          "August",
+          "September",
+          "October",
+          "November",
+          "December",
+        ];
+        return `${day} ${months[month]} ${year}`;
+      }
+      function Edit(id) {
+        window.location.href = `/admin/comments/edit/${id}`;
+      }
+      function Delete(id) {
+        $.ajax({
+          url: `comment/${id}`,
+          type: "DELETE",
+          success: location.reload(),
+          error: function (err) {
+            console.log(err);
+          },
+        })
+      }
+    </script>
   </body>
 </html>

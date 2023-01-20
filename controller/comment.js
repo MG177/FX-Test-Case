@@ -57,7 +57,7 @@ exports.list = (req, res) => {
           res.status(404).send({
             message: `Cannot update Comment with id=${id}. Maybe Comment was not found!`,
           });
-        } else res.send({ message: "Comment was updated successfully." });
+        } else res.send({ message: "Comment was updated successfully."+data +req.body});
       })
       .catch((err) => {
         res.status(500).send({

@@ -6,6 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/style.css" />
     <title>Edit Comment</title>
+    <script
+      src="https://code.jquery.com/jquery-3.6.3.js"
+      integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM="
+      crossorigin="anonymous"
+    ></script>
   </head>
   <body>
     <div class="container">
@@ -16,18 +21,44 @@
       <div class="edit-form-container">
         <h2>Edit Comment</h2>
         <form action="" class="edit-form-content">
-          <input type="text" placeholder="Name" class="edit-form-input" />
+          <input type="text" placeholder="Name" id="name" class="edit-form-input" />
           <textarea
             name=""
-            id=""
+            id="comment"
             cols="30"
             rows="10"
             class="edit-form-textarea"
             placeholder="Comment"
           ></textarea>
-          <button class="form-btn">Update</button>
+          <button class="form-btn" type="button" onclick="Update(url)">Update</button>
         </form>
       </div>
     </div>
+    <script>
+      // const button = document.getElementById("patch");
+      // button.addEventListener("click", () => {
+      //       Update(id);
+      //     });
+      // console.log(id)
+      const getUrl = window.location.href;
+      const id = url.substring(url.lastIndexOf("/") + 1);
+      const url = "/comment/"+id;
+      console.log(hoo)
+      function Update(hoo) {
+        const name = document.getElementById("name").value;
+        const comment = document.getElementById("comment").value;
+        $.ajax({
+          url: url,
+          type: "PATCH",
+          contentType: "application/json",
+          data: JSON.stringify({ name, comment }),
+          success: console.log(JSON.stringify({ name, comment })),
+          // success: (window.location.href = "/admin"),
+          error: function (err) {
+            console.log(err);
+          },
+        });
+      }
+    </script>
   </body>
 </html>
