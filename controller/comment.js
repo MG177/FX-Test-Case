@@ -1,6 +1,7 @@
 const Comment = require("../models/comments");
 exports.list = (req, res) => {
     Comment.find()
+      .sort({date: 'asc'})
       .then((comments) => {
         res.send(comments);
       })
@@ -55,9 +56,9 @@ exports.list = (req, res) => {
       .then((data) => {
         if (!data) {
           res.status(404).send({
-            message: `Cannot update Comment with id=${id}. Maybe Comment was not found!`,
+            message: "Comment was not found!",
           });
-        } else res.send({ message: "Comment was updated successfully."+data +req.body});
+        } else res.send({ message: "Comment was updated successfully."});
       })
       .catch((err) => {
         res.status(500).send({

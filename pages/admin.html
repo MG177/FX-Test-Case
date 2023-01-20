@@ -16,7 +16,7 @@
     <div class="container">
       <div class="admin-header">
         <p class="admin-header-txt">List of Comments</p>
-        <button class="admin-header-btn">Logout</button>
+        <a class="admin-header-btn" href="/user/logout">Logout</a>
       </div>
       <div class="container comments-container" id="comments">
         <h2 class="comments-title" id="comment-length">List of Comments</h2>
@@ -45,8 +45,8 @@
                 ${comment.text}
               </p>
               <div class="container-comment-btn">
-                <button class="comment-btn-edit" onclick="Edit('${comment._id}'") type="button">Edit</button>
-                <button class="comment-btn-delete" onclick="Delete('${comment._id}'" type="button")>Delete</button>
+                <button class="comment-btn-edit" onclick="Edit('${comment._id}')" type="button">Edit</button>
+                <button class="comment-btn-delete" onclick="Delete('${comment._id}')" type="button")>Delete</button>
               </div>
             </div>
             `;
@@ -76,11 +76,11 @@
         return `${day} ${months[month]} ${year}`;
       }
       function Edit(id) {
-        window.location.href = `/admin/comments/edit/${id}`;
+        window.location.href = "/admin/comments/edit/"+id;
       }
       function Delete(id) {
         $.ajax({
-          url: `comment/${id}`,
+          url: '/comment/'+id,
           type: "DELETE",
           success: location.reload(),
           error: function (err) {

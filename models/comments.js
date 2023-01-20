@@ -3,15 +3,15 @@ const mongoose = require('mongoose')
 const commentSchema = new mongoose.Schema({
     name:{
         type: String,
-        required: true
+        required: true,
     },
     date:{
         type: Date,
-        default: Date.now    
+        default: Date.now
     },
     text:{
         type: String,
-        required: true
+        required: true,
     },
 })
 

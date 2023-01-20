@@ -16,7 +16,7 @@
     <div class="container">
       <div class="admin-header">
         <p class="admin-header-txt">List of Comments</p>
-        <button class="admin-header-btn">Logout</button>
+        <button class="admin-header-btn" href="/api/user/logout">Logout</button>
       </div>
       <div class="edit-form-container">
         <h2>Edit Comment</h2>
@@ -30,30 +30,34 @@
             class="edit-form-textarea"
             placeholder="Comment"
           ></textarea>
-          <button class="form-btn" type="button" onclick="Update(url)">Update</button>
+          <button class="form-btn" type="button" onclick="Update()">Update</button>
         </form>
       </div>
     </div>
     <script>
-      // const button = document.getElementById("patch");
-      // button.addEventListener("click", () => {
-      //       Update(id);
-      //     });
-      // console.log(id)
       const getUrl = window.location.href;
-      const id = url.substring(url.lastIndexOf("/") + 1);
+      const id = getUrl.substring(getUrl.lastIndexOf("/") + 1);
       const url = "/comment/"+id;
-      console.log(hoo)
-      function Update(hoo) {
+      $.ajax({
+        url: url,
+        type: "GET",
+        success: function (data) {
+          const comment = data;
+          document.getElementById("name").value = comment.name;
+          document.getElementById("comment").value = comment.text;
+        },
+      });
+      function Update() {
         const name = document.getElementById("name").value;
-        const comment = document.getElementById("comment").value;
+        const text = document.getElementById("comment").value;
+        console.log(document.getElementById("comment").value)
         $.ajax({
           url: url,
           type: "PATCH",
           contentType: "application/json",
-          data: JSON.stringify({ name, comment }),
-          success: console.log(JSON.stringify({ name, comment })),
-          // success: (window.location.href = "/admin"),
+          data: JSON.stringify({ name, text, }),
+          // success: console.log(JSON.stringify({ name, text })),
+          success: (window.location.href = "/admin"),
           error: function (err) {
             console.log(err);
           },
